@@ -26,17 +26,15 @@ export default function Login() {
       console.log(response.data.token);
       return response.data.token;
     },
-    onSettled: (res) => {
-      login(res);
-      setTimeout(() => {
-        navigate("/", { replace: true });
-      }, 1000);
-    },
     onError: (error) => {
       toast.error(error?.response?.data?.message);
     },
-    onSuccess: () => {
+    onSuccess: (token) => {
+      login(token);
       toast.success("Login success");
+      setTimeout(() => {
+        navigate("/", { replace: true });
+      }, 1000);
     },
   });
 
