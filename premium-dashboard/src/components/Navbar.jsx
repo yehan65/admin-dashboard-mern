@@ -162,7 +162,7 @@ export default function Navbar({ toggleCollapse, toggleSidebar }) {
               onClick={() => setOpen(!open)}
             />
           ) : (
-            <CircleUserRound size={10} />
+            <CircleUserRound size={30} />
           )}
           {open && (
             <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 shadow rounded">
