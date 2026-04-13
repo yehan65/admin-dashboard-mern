@@ -10,6 +10,7 @@ const app = express();
 
 app.use(
   cors({
+    origin: "https://admin-dashboard-mern.vercel.app",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "x-auth-token"],
     credentials: true,
