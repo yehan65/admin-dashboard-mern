@@ -1,11 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { fetchPosts } from "../api/fakeUsers";
 import toast from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { AuthContext } from "../context/Auth";
+import api from "../services/api";
 
 export default function Posts({}) {
   const [form, setForm] = useState({
@@ -42,19 +41,14 @@ export default function Posts({}) {
   const { data = [] } = useQuery({
     queryKey: ["allPosts"],
     queryFn: async () => {
-      const response = await axios.get(
-        "http://localhost:8000/admin/getAllPosts",
-        {
-          headers: {
-            "x-auth-token": cleanToken,
-          },
+      const response = await api.get("/admin/getAllPosts", {
+        headers: {
+          "x-auth-token": cleanToken,
         },
-      );
+      });
       return response.data.posts;
     },
   });
-
-
 
   const filteredPosts = posts.filter((post) => {
     const matchesSearch = post.title

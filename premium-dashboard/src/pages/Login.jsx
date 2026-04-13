@@ -2,10 +2,10 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../context/Auth";
 import { useEffect } from "react";
+import api from "../services/api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,13 +19,10 @@ export default function Login() {
 
   const { mutate, isError, error } = useMutation({
     mutationFn: async () => {
-      const response = await axios.post(
-        "http://localhost:8000/admin/auth/admin",
-        {
-          email,
-          password,
-        },
-      );
+      const response = await api.post("/admin/auth/admin", {
+        email,
+        password,
+      });
       console.log(response.data.token);
       return response.data.token;
     },

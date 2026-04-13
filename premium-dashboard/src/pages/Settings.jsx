@@ -1,13 +1,13 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { User, ArrowRight } from "lucide-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import toast from "react-hot-toast";
 
 import { AuthContext } from "../context/Auth";
 import Modal from "../components/Modal";
 import { queryClient } from "../client/client";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 export default function Settings() {
   const [preview, setPreview] = useState(null);
@@ -29,7 +29,7 @@ export default function Settings() {
   } = useQuery({
     queryKey: ["admin", "me", cleanToken],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:8000/admin/getAdmin", {
+      const response = await api.get("/admin/getAdmin", {
         headers: {
           "x-auth-token": cleanToken,
         },
@@ -67,15 +67,11 @@ export default function Settings() {
 
   const { mutate: updateAvatar, isPending: updateAvatarPending } = useMutation({
     mutationFn: async (data) => {
-      const response = await axios.put(
-        "http://localhost:8000/admin/updateAvatar",
-        data,
-        {
-          headers: {
-            "x-auth-token": cleanToken,
-          },
+      const response = await api.put("/admin/updateAvatar", data, {
+        headers: {
+          "x-auth-token": cleanToken,
         },
-      );
+      });
       return response.data;
     },
     onMutate: async (formData) => {
@@ -121,15 +117,11 @@ export default function Settings() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (updatedFields) => {
-      const response = await axios.patch(
-        "http://localhost:8000/admin/updateAdmin",
-        updatedFields,
-        {
-          headers: {
-            "x-auth-token": cleanToken,
-          },
+      const response = await api.patch("/admin/updateAdmin", updatedFields, {
+        headers: {
+          "x-auth-token": cleanToken,
         },
-      );
+      });
       return response.data;
     },
     onMutate: async (updatedFields) => {

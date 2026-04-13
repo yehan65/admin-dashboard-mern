@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/Auth";
-import axios from "axios";
 import toast from "react-hot-toast";
+import api from "../services/api";
 
 export default function EditPassword() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -16,7 +16,7 @@ export default function EditPassword() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["admin", "me", cleanToken],
     queryFn: async () => {
-      const repsonse = await axios.get("http://localhost:8000/admin/getAdmin", {
+      const repsonse = await api.get("/admin/getAdmin", {
         headers: {
           "x-auth-token": cleanToken,
         },
@@ -28,8 +28,8 @@ export default function EditPassword() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async ({ currentPassword, newPassword }) => {
-      const response = await axios.patch(
-        "http://localhost:8000/admin/update/password",
+      const response = await api.patch(
+        "/admin/update/password",
         { currentPassword, newPassword },
         {
           headers: {

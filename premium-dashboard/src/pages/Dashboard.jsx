@@ -9,19 +9,12 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import StatCard from "../components/StatCard";
-import {
-  DollarSign,
-  FileText,
-  MessageSquare,
-  Users,
-  UserCog,
-  Server,
-} from "lucide-react";
+import { FileText, Users, UserCog, Server } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 import { useContext } from "react";
 import { AuthContext } from "../context/Auth";
+import api from "../services/api";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -32,14 +25,11 @@ export default function Dashboard() {
   const { data = [] } = useQuery({
     queryKey: ["dashboardStats"],
     queryFn: async () => {
-      const response = await axios.get(
-        `http://localhost:8000/admin/dashboardStats`,
-        {
-          headers: {
-            "x-auth-token": cleanToken,
-          },
+      const response = await api.get(`/admin/dashboardStats`, {
+        headers: {
+          "x-auth-token": cleanToken,
         },
-      );
+      });
       return response.data;
     },
   });
@@ -47,14 +37,11 @@ export default function Dashboard() {
   const { data: chartData = [] } = useQuery({
     queryKey: ["chartData"],
     queryFn: async () => {
-      const response = await axios.get(
-        "http://localhost:8000/admin/getChartData",
-        {
-          headers: {
-            "x-auth-token": cleanToken,
-          },
+      const response = await api.get("/admin/getChartData", {
+        headers: {
+          "x-auth-token": cleanToken,
         },
-      );
+      });
       return response.data;
     },
   });

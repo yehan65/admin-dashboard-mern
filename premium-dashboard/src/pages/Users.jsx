@@ -2,13 +2,12 @@ import { useContext, useEffect, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import toast from "react-hot-toast";
 import "react-loading-skeleton/dist/skeleton.css";
-import { fetchUsers } from "../api/fakeUsers";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { AuthContext } from "../context/Auth";
 import { CircleUserRound, XIcon } from "lucide-react";
 import { queryClient } from "../client/client";
 import Modal from "../components/Modal";
+import api from "../services/api";
 
 export default function Users({}) {
   const [form, setForm] = useState({
@@ -42,14 +41,11 @@ export default function Users({}) {
   const { data: allUsers = [] } = useQuery({
     queryKey: ["allUsers"],
     queryFn: async () => {
-      const response = await axios.get(
-        "http://localhost:8000/admin/getAllUsers",
-        {
-          headers: {
-            "x-auth-token": cleanToken,
-          },
+      const response = await api.get("/admin/getAllUsers", {
+        headers: {
+          "x-auth-token": cleanToken,
         },
-      );
+      });
       return response.data.allUsers;
     },
   });
@@ -61,15 +57,11 @@ export default function Users({}) {
     error: newUserError,
   } = useMutation({
     mutationFn: async (data) => {
-      const response = await axios.post(
-        "http://localhost:8000/admin/newUser",
-        data,
-        {
-          headers: {
-            "x-auth-token": cleanToken,
-          },
+      const response = await api.post("/admin/newUser", data, {
+        headers: {
+          "x-auth-token": cleanToken,
         },
-      );
+      });
       console.log("response", response.data);
       return response.data;
       // response.data returns --> token and the newUser
@@ -110,8 +102,8 @@ export default function Users({}) {
     isError: isRoleUpdateError,
   } = useMutation({
     mutationFn: async ({ id, role }) => {
-      const response = await axios.put(
-        `http://localhost:8000/admin/${id}/role/update`,
+      const response = await api.put(
+        `/admin/${id}/role/update`,
         { role },
         {
           headers: {
@@ -165,8 +157,8 @@ export default function Users({}) {
     isError: isStatusUpdateError,
   } = useMutation({
     mutationFn: async ({ id, status }) => {
-      const response = await axios.put(
-        `http://localhost:8000/admin/${id}/status/update`,
+      const response = await api.put(
+        `admin/${id}/status/update`,
         {
           status,
         },
