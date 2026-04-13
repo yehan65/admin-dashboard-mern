@@ -105,9 +105,21 @@ npm run dev
 
 ## 📸 Screenshots
 
-(Add your dashboard screenshots here)
+### Dashboard
 
----
+![Dashboard](./screenshots/dashboard.png)
+
+### Users Management
+
+![Users](./screenshots/users.png)
+
+### Settings Page
+
+![Settings](./screenshots/settings.png)
+
+### Edit Password
+
+## ![Edit_Password](./screenshots/editPassword.png)
 
 ## 🌍 Live Demo
 
